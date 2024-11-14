@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer with Syllabus Completion</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            font-family: Arial, sans-serif;
+            color: #61dafb;
+        }
+        .timer-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #1c2025;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .timer {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .label {
+            font-size: 1rem;
+            color: #aab4be;
+        }
+        .time-unit {
+            display: inline-block;
+            margin: 0 15px;
+            text-align: center;
+        }
+        /* Range slider styling */
+        .slider-container {
+            margin-top: 20px;
+        }
+        input[type="range"] {
+            width: 200px;
+        }
+        .slider-value {
+            font-size: 1rem;
+            margin-left: 10px;
+            color: #61dafb;
+        }
+        /* Alert styling */
+        .alert {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #ff4d4d;
+            color: white;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .alert.visible {
+            display: block;
+        }
+        .alert-message {
+            margin: 0;
+        }
+        /* Specific alert styles based on slider ranges */
+        .alert-1 {
+            background-color: #ff6f61;
+        }
+        .alert-2 {
+            background-color: #ffcc00;
+        }
+        .alert-3 {
+            background-color: #ff9900;
+        }
+        .alert-4 {
+            background-color: orange;
+        }
+        .alert-5 {
+            background-color: #ff4d4d;
+        }
+
+        /* Submit button */
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 1rem;
+            color: white;
+            background-color: #61dafb;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4a9cd1;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <h1>Countdown Timer</h1>
+        <div id="timer" class="timer">
+            <div class="time-unit">
+                <span id="days">00</span>
+                <div class="label">Days</div>
+            </div>
+            <div class="time-unit">
+                <span id="hours">00</span>
+                <div class="label">Hours</div>
+            </div>
+            <div class="time-unit">
+                <span id="minutes">00</span>
+                <div class="label">Minutes</div>
+            </div>
+            <div class="time-unit">
+                <span id="seconds">00</span>
+                <div class="label">Seconds</div>
+            </div>
+        </div>
+        
+        <!-- Syllabus Completion label -->
+        <h2>Ketlo Syllabus Complete Thayo</h2>
+
+        <!-- Range slider for selecting completion percentage -->
+        <div class="slider-container">
+            <input type="range" id="start-percentage-slider" min="1" max="100" value="1" oninput="checkSliderValue()" />
+            <span id="slider-value" class="slider-value">1%</span>
+        </div>
+
+        <!-- Submit button -->
+        <button onclick="submitCompletion()">Submit</button>
+
+        <!-- Alert messages -->
+        <div id="alert-message-1" class="alert alert-1"><p class="alert-message">Bas bhai tu college mathi name kadhavi le</p></div>
+        <div id="alert-message-2" class="alert alert-2"><p class="alert-message">Haju baki che pass thavay etlu to kari le</p></div>
+        <div id="alert-message-3" class="alert alert-3"><p class="alert-message">Gadhedav pass thavay etla marks e tane job nay male</p></div>
+        <div id="alert-message-4" class="alert alert-4"><p class="alert-message">Bas average</p></div>
+        <div id="alert-message-5" class="alert alert-5"><p class="alert-message">Bas kar aukad bar che tari unless you are dhanisha</p></div>
+    </div>
+
+    <script>
+        // Set the target date for countdown
+        const targetDate = new Date("2024-11-21T00:00:00").getTime();
+        
+        // Update displayed slider value dynamically
+        function checkSliderValue() {
+            const slider = document.getElementById("start-percentage-slider");
+            const sliderValue = slider.value;
+            document.getElementById("slider-value").innerText = `${sliderValue}%`;
+
+            // Hide all alerts initially
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.classList.remove("visible");
+            });
+
+            // Display specific alert based on slider value
+            if (sliderValue >= 0 && sliderValue <= 20) {
+                document.getElementById("alert-message-1").classList.add("visible");
+            } else if (sliderValue > 20 && sliderValue <= 40) {
+                document.getElementById("alert-message-2").classList.add("visible");
+            } else if (sliderValue > 40 && sliderValue <= 60) {
+                document.getElementById("alert-message-3").classList.add("visible");
+            } else if (sliderValue > 60 && sliderValue <= 80) {
+                document.getElementById("alert-message-4").classList.add("visible");
+            } else if (sliderValue > 80 && sliderValue <= 100) {
+                document.getElementById("alert-message-5").classList.add("visible");
+            }
+        }
+
+        // Placeholder function for submit action
+        function submitCompletion() {
+            const completionValue = document.getElementById("start-percentage-slider").value;
+            alert(`Syllabus Completion set to ${completionValue}%`);
+        }
+
+        // Update countdown timer every second
+        setInterval(() => {
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Display countdown time
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = String(hours).padStart(2, "0");
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, "0");
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, "0");
+        }, 1000);
+    </script>
+</body>
+</html>
